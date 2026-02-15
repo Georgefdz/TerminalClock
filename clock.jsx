@@ -14,10 +14,25 @@ const createAsciiText = (text, options = {}) =>
     });
   });
 
+const hslToHex = (h, s, l) => {
+  s /= 100;
+  l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+};
+
 function AsciiClock() {
   const { stdout } = useStdout();
   const [now, setNow] = useState(new Date());
   const [asciiArt, setAsciiArt] = useState("");
+  const [hue, setHue] = useState(0);
 
   const [dimensions, setDimensions] = useState({
     cols: stdout.columns ?? 80,
@@ -30,6 +45,14 @@ function AsciiClock() {
     }, 250);
 
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const hueTimer = setInterval(() => {
+      setHue((prev) => (prev + 2) % 360);
+    }, 50);
+
+    return () => clearInterval(hueTimer);
   }, []);
 
   useEffect(() => {
@@ -78,6 +101,8 @@ function AsciiClock() {
     Math.floor((dimensions.cols - bannerWidth) / 2),
   );
 
+  const color = hslToHex(hue, 80, 55);
+
   return (
     <Box
       flexDirection="column"
@@ -88,7 +113,7 @@ function AsciiClock() {
 
       <Box flexDirection="column" paddingLeft={leftPadding}>
         {lines.map((line, index) => (
-          <Text key={index} color="cyan">
+          <Text key={index} color={color}>
             {line}
           </Text>
         ))}
