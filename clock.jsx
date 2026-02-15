@@ -18,6 +18,7 @@ function AsciiClock() {
   const { stdout } = useStdout();
   const [now, setNow] = useState(new Date());
   const [asciiArt, setAsciiArt] = useState("");
+
   const [dimensions, setDimensions] = useState({
     cols: stdout.columns ?? 80,
     rows: stdout.rows ?? 24,
@@ -27,6 +28,7 @@ function AsciiClock() {
     const timer = setInterval(() => {
       setNow(new Date());
     }, 250);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -76,23 +78,25 @@ function AsciiClock() {
     Math.floor((dimensions.cols - bannerWidth) / 2),
   );
 
-  return React.createElement(
-    Box,
-    {
-      flexDirection: "column",
-      width: dimensions.cols,
-      height: dimensions.rows,
-    },
-    React.createElement(Box, { height: topPadding }),
-    React.createElement(
-      Box,
-      { flexDirection: "column", paddingLeft: leftPadding },
-      ...lines.map((line, index) =>
-        React.createElement(Text, { key: index, color: "cyan" }, line),
-      ),
-    ),
-    React.createElement(Box, { flexGrow: 1 }),
+  return (
+    <Box
+      flexDirection="column"
+      width={dimensions.cols}
+      height={dimensions.rows}
+    >
+      <Box height={topPadding} />
+
+      <Box flexDirection="column" paddingLeft={leftPadding}>
+        {lines.map((line, index) => (
+          <Text key={index} color="cyan">
+            {line}
+          </Text>
+        ))}
+      </Box>
+
+      <Box flexGrow={1} />
+    </Box>
   );
 }
 
-render(React.createElement(AsciiClock));
+render(<AsciiClock />);
