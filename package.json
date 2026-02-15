@@ -1,0 +1,25 @@
+{
+  "name": "terminalclock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Georgefdz/TerminalClock.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Georgefdz/TerminalClock/issues"
+  },
+  "homepage": "https://github.com/Georgefdz/TerminalClock#readme",
+  "description": "",
+  "dependencies": {
+    "figlet": "^1.10.0",
+    "ink": "^6.7.0"
+  }
+}
